@@ -1,0 +1,15 @@
+% filename: fontoptions.tex
+\usepackage{polyglossia}		% Babel replacement for XeTeX
+  \setdefaultlanguage[spelling=modern]{russian}
+  \setotherlanguage{english}
+\usepackage{fontspec}			% Provides an automatic and unified interface for loading fonts.
+\usepackage{xunicode}			% Generate Unicode chars from accented glyphs.
+\usepackage{xltxtra}			% "Extras" for LaTeX users of XeTeX.
+\usepackage{xecyr}			% Help with Russian.
+
+
+%% Fonts
+\defaultfontfeatures{Mapping=tex-text}
+\setmainfont{CMU Serif}
+\setsansfont{CMU Sans Serif}
+\setmonofont{CMU Typewriter Text}
