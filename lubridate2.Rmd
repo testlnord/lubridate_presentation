@@ -3,7 +3,7 @@ title: "lubridate"
 subtitle: "Даты без боли"
 author: | 
   | Калакуцкий Аркадий
-  | Младший технический аналитик
+  | Младший технический аналитик---
   | JetBrains
 date: "November 26, 2016"
 output: 
@@ -24,11 +24,148 @@ knitr::opts_chunk$set(echo = FALSE)
 library(lubridate)
 ```
 
-## О моей задаче
-О моей задаче
 
-## О моей задаче
-пример данных
+## Задача
+Построить тренд числа активных пользователей по месяцам.
+
+Пользователи совершают некоторые действия. 
+Пользователь считается активным с момента первого действия и в течение года с момента
+последнего действия. 
+
+## Задача
+Пример данных
+```{r, include= TRUE}
+users <- read.csv("users.csv")
+head(users)
+```
+
+
+## Преобразовать строку в Date 
+Как это сделал я
+```{r, include=TRUE, echo=TRUE}
+class(users$first_action[1])
+users$first_action <- as.Date(users$first_action)
+class(users$first_action[1])
+```
+
+```{r}
+users$last_action <- as.Date(users$last_action)
+```
+
+## Преобразовать строку в Date
+Что делать если не повезло?
+```{r, echo=TRUE, include=TRUE, error=TRUE}
+as.Date("12-31-2011")
+as.Date("12-31-2011", "%m-%d-%Y")
+as.Date("2011 Сентябрь 12", "%Y %B %d")
+```
+
+## Преобразовать строку в Date
+Чем может помочь lubridate?
+
+Он сделает все за вас!
+
+## Преобразовать строку в Date
+Подобрать форматную строку
+
+```{r, echo=TRUE, include=TRUE}
+guess_formats("12-31-2011", "mdy")
+guess_formats("2011 Сентябрь 12", "ymd")
+```
+
+## Преобразовать строку в Date
+
+Семейство функций: `ymd`, `ydm`, `dmy`, `mdy`, `myd`, `dym`, 
+`*_hms`, `*_hm`, `*_h`, `yq`
+```{r, echo=TRUE, include=TRUE}
+mdy("12-31-2011")
+ymd("2011 Сентябрь 12")
+```
+
+## Преобразовать строку в Date
+
+Если совсем-совсем не повезло
+```{r}
+bad_dates <- c("2011 Сентябрь 12", '22-02-02')
+parse_date_time(bad_dates, orders = c('dmy', 'ymd' ))
+```
+
+## Прибавить к дате год
+
+1. Округлить дату до начала месяца
+2. Прибавить к дате год
+
+## Округлить дату
+
+Без lubridate
+
+```{r, include=TRUE, echo=TRUE}
+date <- as.Date("2012-02-14")
+as.Date(format(date, "%Y-%m-01"))
+```
+
+## Округлить дату
+
+С lubridate
+
+```{r, include=TRUE, echo=TRUE}
+date <- ymd("2012-02-14")
+floor_date(date, "month")
+```
+
+## Прибавить к дате год
+
+Без lubridate
+```{r, include=TRUE, echo=TRUE}
+date <- as.Date("2012-02-01")
+date + 365
+date <- as.Date("2012-03-01")
+date + 365
+```
+
+## Прибавить к дате год
+
+С lubridate
+```{r, include=TRUE, echo=TRUE}
+date <- ymd("2012-02-01")
+date + years(1)
+date <- as.Date("2012-03-01")
+date + years(1)
+```
+
+## timespans 
+
+- Instants
+- Intervals
+- Durations
+- Periods
+
+## Intervals
+
+```{r, echo=TRUE, include=T}
+int2 <- interval(ymd("2013-02-01") , ymd("2012-01-04"))
+int1 <- ymd("2013-02-01") %--% ymd("2012-01-04")
+int1 
+int_start(int1)
+```
+
+## Durations
+
+```{r, echo=TRUE, include=T}
+dweeks(3)
+ddays(21)
+dyears(1)
+```
+
+## Periods
+
+```{r, echo=TRUE, include=TRUE}
+years(1)
+days(1)
+period(3, 'months')
+```
+
+
 
 ## Как
 
