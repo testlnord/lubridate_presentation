@@ -1,0 +1,206 @@
+---
+title: "Lubridate"
+subtitle: "Dates with no pain"
+author: "Arkady"
+date: "April 14, 2017"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+```
+
+## История первая
+### Про активных пользователей
+Есть вот такие данные:
+```{r}
+user.activities <- read.csv("data/user_activities.csv")
+head(user.activities)
+```
+Нужно построить график активности пользователей по месяцам.
+
+
+## История первая
+Округлим даты к началу месяца
+
+*Без lubridate*
+```{r, echo=TRUE}
+as.Date(format(as.Date(user.activities$activity.dates), "%Y-%m-01")) %>% head
+```
+Среднее время исполнения:
+```{r, cache=TRUE, echo=FALSE}
+mean(sapply(1:100, function(x){
+ # system.time(as.Date(format(as.Date(user.activities$activity.dates), "%Y-%m-01")) %>% head)[1]
+}))
+```
+## История первая
+Округлим даты к началу месяца
+
+*С Lubridate*
+```{r, echo=TRUE}
+floor_date(as.Date(user.activities$activity.dates), "month") %>% head
+```
+Среднее время исполнения:
+```{r, cache=TRUE, echo=FALSE}
+mean(sapply(1:100, function(x){
+#  system.time(floor_date(as.Date(user.activities$activity.dates), "month") %>% head)[1]
+}))
+```
+
+## История первая
+Найдем месяц первой и последней активности для каждого пользователя
+```{r, echo=TRUE}
+
+user.activities.months <- user.activities %>% 
+  mutate(activity.month = floor_date(as.Date(activity.dates), "month")) %>% 
+  group_by(user.id) %>%
+  summarise(first.month = min(activity.month),
+            last.month = max(activity.month))
+head(user.activities.months)
+```
+
+## История первая
+Теперь для к дате последней активности добавим год. 
+
+Как это делать без lubridate?
+
+## История первая
+Теперь для к дате последней активности добавим год. 
+
+Как это делать с lubridate?
+
+```{r}
+user.activities.months$last.month %>% head
+(user.activities.months$last.month + years(1)) %>% head
+```
+
+## Что еще можно прибавить?
+```{r}
+date <- as.Date("2016-02-12")
+date
+date + years(1)
+date + months(1)
+date + days(1)
+```
+
+## Что еще можно прибавить?
+Что получится в результате?
+```{r, results="hide"}
+as.Date("2016-02-29") + years(1)
+as.Date("2016-01-31") + months(1)
+```
+
+## Что еще можно прибавить?
+```{r}
+as.Date("2016-02-29") + years(1)
+as.Date("2016-01-31") + months(1)
+```
+## Что еще можно прибавить?
+Если мы имели в виду что-то другое:
+```{r}
+as.Date("2016-02-29") %m+% years(1)
+as.Date("2016-01-31") %m+% months(1)
+```
+
+##  История первая
+Количество активных пользователей по месяцам:
+```{r, echo=FALSE}
+#user.activities.months <- user.activities.months %>% mutate(last.month = last.month + years(1))
+users.count.by.month <- do.call(rbind, lapply(seq(min(user.activities.months$first.month),max(user.activities.months$last.month), "month"),
+                               function(month){
+                                 data.frame(month=month, 
+                                            active.users.count = user.activities.months %>% filter(month <= last.month, month >= first.month) %>% nrow)
+                                 }))
+users.count.by.month <- filter(users.count.by.month, month <= max(user.activities.months$last.month)-years(1))
+ggplot(users.count.by.month, aes(month, active.users.count)) + geom_line()
+
+```
+
+
+
+## История вторая
+### Про плохую выгрузку
+Что делать с такими данными:
+```{r}
+bad.dates <- read.csv("data/bad_formats.csv", stringsAsFactors = FALSE)
+head(bad.dates)
+```
+
+## История вторая
+```{r}
+parse_date_time(bad.dates, 
+                orders = c("%Y-%m-%d %H:%M:%S", 
+                           "%Y-%m-%d %H:%M", 
+                           "%Y-%m-%d")) %>% head
+```
+
+## История вторая
+```{r}
+parse_date_time(bad.dates, 
+                orders = c("ymdhms", 
+                           "ymdhm", 
+                           "ymd")) %>% head
+```
+
+## Cемейство `ymd`
+`ymd`, `dmy`, `ydm`, `mdy`, `hm`, `hms`, `ymd_hms` 
+```{r}
+ymd('20120101','120101','12-01-01','12asdf1dfdf1')
+```
+
+## История третья
+### Про секунды
+Есть измерения длительности события при разных условиях:
+```{r}
+seconds <- read.csv("data/seconds.csv")
+seconds %>% head
+```
+Нужно проверить гипотезу о том, что среднее время при условиях `А` меньше
+
+## История третья
+Как из `00:01:41` получить секунды?
+
+## История третья
+Как из `00:01:41` получить секунды?
+```{r}
+as.integer(as.duration(hms(seconds$time))) %>% head
+```
+
+## Отрезки времени
+
+###Period
+
+###Duration
+
+###Interval
+
+## Duration
+
+```{r}
+dmicroseconds(1)
+dseconds(1)
+ddays(1)
+dyears(1)
+```
+
+## История третья
+Чем все закончилось?
+```{r}
+seconds$seconds <- as.integer(as.duration(hms(seconds$time)))
+seconds.a <- seconds %>% filter(condition == 'A') %>% select(seconds) %>% unlist
+seconds.b <- seconds %>% filter(condition == 'B') %>% select(seconds) %>% unlist
+t.test(seconds.a, seconds.b, alternative = "less")
+```
+## На этом все
+ 
+[Do more with dates and times in R with lubridate](https://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html)
+
+[Dates and Times Made Easy with lubridate](https://www.jstatsoft.org/article/view/v040i03/v40i03.pdf)
+
+[Документация](https://cran.r-project.org/web/packages/lubridate/lubridate.pdf)
+
+## Спасибо за внимание
+
