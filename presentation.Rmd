@@ -199,7 +199,7 @@ interval("2012-01-01","2012-02-01")
 seconds$seconds <- as.integer(as.duration(hms(seconds$time)))
 seconds.a <- seconds %>% filter(condition == 'A') %>% select(seconds) %>% unlist
 seconds.b <- seconds %>% filter(condition == 'B') %>% select(seconds) %>% unlist
-t.test(seconds.a, seconds.b, д = "less")
+t.test(seconds.a, seconds.b, alternative = "less")
 ```
 
 ## На этом все
