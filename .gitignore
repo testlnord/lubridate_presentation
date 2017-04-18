@@ -2,5 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-presentations_cache/
+presentation_cache/
 data/*.csv

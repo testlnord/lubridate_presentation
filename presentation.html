@@ -5,9 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="author" content="Arkady" />
-  <meta name="date" content="2017-04-14" />
-  <title>Lubridate</title>
+  <title>lubridate</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -51,12 +49,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <div class="slide titlepage">
-  <h1 class="title">Lubridate</h1>
-  <h1 class="subtitle">Dates with no pain</h1>
+  <h1 class="title">lubridate</h1>
+  <h1 class="subtitle">Даты без боли</h1>
   <p class="author">
-Arkady
+Калакуцкий Аркадий
+<p style="font-size:small">
+Младший технический аналитик
+</p>
+<p style="font-size:small">
+JetBrains
+</p>
   </p>
-  <p class="date">April 14, 2017</p>
+  <p class="date">15.04.2017</p>
 </div>
 <div id="-" class="slide section level2">
 <h1>История первая</h1>
@@ -81,9 +85,7 @@ Arkady
 <pre><code>## [1] &quot;2010-06-01&quot; &quot;2010-07-01&quot; &quot;2010-07-01&quot; &quot;2010-08-01&quot; &quot;2010-08-01&quot;
 ## [6] &quot;2010-09-01&quot;</code></pre>
 <p>Среднее время исполнения:</p>
-<pre><code>## Warning in mean.default(sapply(1:100, function(x) {: argument is not
-## numeric or logical: returning NA</code></pre>
-<pre><code>## [1] NA</code></pre>
+<pre><code>## [1] 0.1274</code></pre>
 </div>
 <div id="--2" class="slide section level2">
 <h1>История первая</h1>
@@ -93,9 +95,7 @@ Arkady
 <pre><code>## [1] &quot;2010-06-01&quot; &quot;2010-07-01&quot; &quot;2010-07-01&quot; &quot;2010-08-01&quot; &quot;2010-08-01&quot;
 ## [6] &quot;2010-09-01&quot;</code></pre>
 <p>Среднее время исполнения:</p>
-<pre><code>## Warning in mean.default(sapply(1:100, function(x) {: argument is not
-## numeric or logical: returning NA</code></pre>
-<pre><code>## [1] NA</code></pre>
+<pre><code>## [1] 0.08404</code></pre>
 </div>
 <div id="--3" class="slide section level2">
 <h1>История первая</h1>
@@ -132,33 +132,29 @@ Arkady
 <pre><code>## [1] &quot;2017-12-01&quot; &quot;2017-02-01&quot; &quot;2017-12-01&quot; &quot;2017-09-01&quot; &quot;2017-12-01&quot;
 ## [6] &quot;2017-12-01&quot;</code></pre>
 </div>
-<div id="---" class="slide section level2">
-<h1>Что еще можно прибавить?</h1>
+<div id="period" class="slide section level2">
+<h1>Period</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">date &lt;-<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2016-02-12&quot;</span>)
-date</code></pre></div>
-<pre><code>## [1] &quot;2016-02-12&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">date +<span class="st"> </span><span class="kw">years</span>(<span class="dv">1</span>)</code></pre></div>
-<pre><code>## [1] &quot;2017-02-12&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">date +<span class="st"> </span><span class="kw">months</span>(<span class="dv">1</span>)</code></pre></div>
-<pre><code>## [1] &quot;2016-03-12&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">date +<span class="st"> </span><span class="kw">days</span>(<span class="dv">1</span>)</code></pre></div>
-<pre><code>## [1] &quot;2016-02-13&quot;</code></pre>
+date +<span class="st"> </span><span class="kw">c</span>(<span class="kw">years</span>(<span class="dv">1</span>), <span class="kw">months</span>(<span class="dv">1</span>), <span class="kw">days</span>(<span class="dv">1</span>))</code></pre></div>
+<pre><code>## [1] &quot;2017-02-12&quot; &quot;2016-03-12&quot; &quot;2016-02-13&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">date +<span class="st"> </span>(<span class="kw">years</span>(<span class="dv">1</span>)*<span class="dv">2</span> +<span class="st"> </span><span class="kw">months</span>(<span class="dv">1</span>))</code></pre></div>
+<pre><code>## [1] &quot;2018-03-12&quot;</code></pre>
 </div>
-<div id="----1" class="slide section level2">
-<h1>Что еще можно прибавить?</h1>
+<div id="period-1" class="slide section level2">
+<h1>Period</h1>
 <p>Что получится в результате?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.Date</span>(<span class="st">&quot;2016-02-29&quot;</span>) +<span class="st"> </span><span class="kw">years</span>(<span class="dv">1</span>)
 <span class="kw">as.Date</span>(<span class="st">&quot;2016-01-31&quot;</span>) +<span class="st"> </span><span class="kw">months</span>(<span class="dv">1</span>)</code></pre></div>
 </div>
-<div id="----2" class="slide section level2">
-<h1>Что еще можно прибавить?</h1>
+<div id="period-2" class="slide section level2">
+<h1>Period</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.Date</span>(<span class="st">&quot;2016-02-29&quot;</span>) +<span class="st"> </span><span class="kw">years</span>(<span class="dv">1</span>)</code></pre></div>
 <pre><code>## [1] NA</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.Date</span>(<span class="st">&quot;2016-01-31&quot;</span>) +<span class="st"> </span><span class="kw">months</span>(<span class="dv">1</span>)</code></pre></div>
 <pre><code>## [1] NA</code></pre>
 </div>
-<div id="----3" class="slide section level2">
-<h1>Что еще можно прибавить?</h1>
+<div id="period-3" class="slide section level2">
+<h1>Period</h1>
 <p>Если мы имели в виду что-то другое:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.Date</span>(<span class="st">&quot;2016-02-29&quot;</span>) %m+%<span class="st"> </span><span class="kw">years</span>(<span class="dv">1</span>)</code></pre></div>
 <pre><code>## [1] &quot;2017-02-28&quot;</code></pre>
@@ -172,16 +168,11 @@ date</code></pre></div>
 <div id="-" class="slide section level2">
 <h1>История вторая</h1>
 <h3 id="--">Про плохую выгрузку</h3>
-<p>Что делать с такими данными:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bad.dates &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/bad_formats.csv&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+<p>Что делать с такими данными?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bad.dates &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/bad_formats.csv&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)$x
 <span class="kw">head</span>(bad.dates)</code></pre></div>
-<pre><code>##                     x
-## 1    2012-01-05 17:48
-## 2 2012-01-09 22:14:57
-## 3 2012-01-11 13:45:27
-## 4 2012-01-12 14:17:37
-## 5 2012-01-20 12:26:08
-## 6    2012-01-23 09:00</code></pre>
+<pre><code>## [1] &quot;2012-01-05 17:48&quot;    &quot;2012-01-09 22:14:57&quot; &quot;2012-01-11 13:45:27&quot;
+## [4] &quot;2012-01-12 14:17:37&quot; &quot;2012-01-20 12:26:08&quot; &quot;2012-01-23 09:00&quot;</code></pre>
 </div>
 <div id="--1" class="slide section level2">
 <h1>История вторая</h1>
@@ -189,21 +180,23 @@ date</code></pre></div>
                 <span class="dt">orders =</span> <span class="kw">c</span>(<span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, 
                            <span class="st">&quot;%Y-%m-%d %H:%M&quot;</span>, 
                            <span class="st">&quot;%Y-%m-%d&quot;</span>)) %&gt;%<span class="st"> </span>head</code></pre></div>
-<pre><code>## Warning: All formats failed to parse. No formats found.</code></pre>
-<pre><code>## [1] NA</code></pre>
+<pre><code>## [1] &quot;2012-01-05 17:48:00 UTC&quot; &quot;2012-01-09 22:14:57 UTC&quot;
+## [3] &quot;2012-01-11 13:45:27 UTC&quot; &quot;2012-01-12 14:17:37 UTC&quot;
+## [5] &quot;2012-01-20 12:26:08 UTC&quot; &quot;2012-01-23 09:00:00 UTC&quot;</code></pre>
 </div>
 <div id="--2" class="slide section level2">
 <h1>История вторая</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">parse_date_time</span>(bad.dates, 
-                <span class="dt">orders =</span> <span class="kw">c</span>(<span class="st">&quot;ymdhms&quot;</span>, 
-                           <span class="st">&quot;ymdhm&quot;</span>, 
-                           <span class="st">&quot;ymd&quot;</span>)) %&gt;%<span class="st"> </span>head</code></pre></div>
-<pre><code>## Warning: All formats failed to parse. No formats found.</code></pre>
-<pre><code>## [1] NA</code></pre>
+                <span class="dt">orders =</span> <span class="kw">c</span>(<span class="st">&quot;ymd&quot;</span>,
+                           <span class="st">&quot;ymdHM&quot;</span>,
+                           <span class="st">&quot;ymdHMS&quot;</span>)) %&gt;%<span class="st"> </span>head</code></pre></div>
+<pre><code>## [1] &quot;2012-01-05 17:48:00 UTC&quot; &quot;2012-01-09 22:14:57 UTC&quot;
+## [3] &quot;2012-01-11 13:45:27 UTC&quot; &quot;2012-01-12 14:17:37 UTC&quot;
+## [5] &quot;2012-01-20 12:26:08 UTC&quot; &quot;2012-01-23 09:00:00 UTC&quot;</code></pre>
 </div>
 <div id="c-ymd" class="slide section level2">
 <h1>Cемейство <code>ymd</code></h1>
-<p><code>ymd</code>, <code>dmy</code>, <code>ydm</code>, <code>mdy</code>, <code>hm</code>, <code>hms</code>, <code>ymd_hms</code></p>
+<p><code>ymd</code>, <code>dmy</code>, <code>ydm</code>, <code>mdy</code>, <code>hm</code>, <code>ms</code>, <code>hms</code>, <code>ymd_hms</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ymd</span>(<span class="st">'20120101'</span>,<span class="st">'120101'</span>,<span class="st">'12-01-01'</span>,<span class="st">'12asdf1dfdf1'</span>)</code></pre></div>
 <pre><code>## [1] &quot;2012-01-01&quot; &quot;2012-01-01&quot; &quot;2012-01-01&quot; &quot;2012-01-01&quot;</code></pre>
 </div>
@@ -220,22 +213,21 @@ seconds %&gt;%<span class="st"> </span>head</code></pre></div>
 ## 4         A 00:04:49
 ## 5         A 00:05:37
 ## 6         A 00:13:34</code></pre>
-<p>Нужно проверить гипотезу о том, что среднее время при условиях <code>А</code> меньше</p>
+<p>Нужно проверить гипотезу о том, что среднее время при условиях <code>А</code> меньше.</p>
 </div>
 <div id="--1" class="slide section level2">
 <h1>История третья</h1>
-<p>Как из <code>00:01:41</code> получить секунды?</p>
+<p>Как из <code>&quot;00:01:41&quot;</code> получить секунды?</p>
 </div>
 <div id="--2" class="slide section level2">
 <h1>История третья</h1>
-<p>Как из <code>00:01:41</code> получить секунды?</p>
+<p>Как из <code>&quot;00:01:41&quot;</code> получить секунды?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.integer</span>(<span class="kw">as.duration</span>(<span class="kw">hms</span>(seconds$time))) %&gt;%<span class="st"> </span>head</code></pre></div>
-<pre><code>## estimate only: convert periods to intervals for accuracy</code></pre>
 <pre><code>## [1] 1152  984 1006  289  337  814</code></pre>
 </div>
 <div id="-" class="slide section level2">
 <h1>Отрезки времени</h1>
-<h3 id="period">Period</h3>
+<h3 id="period-4">Period</h3>
 <h3 id="duration">Duration</h3>
 <h3 id="interval">Interval</h3>
 </div>
@@ -248,14 +240,18 @@ seconds %&gt;%<span class="st"> </span>head</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ddays</span>(<span class="dv">1</span>)</code></pre></div>
 <pre><code>## [1] &quot;86400s (~1 days)&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dyears</span>(<span class="dv">1</span>)</code></pre></div>
-<pre><code>## [1] &quot;31536000s (~365 days)&quot;</code></pre>
+<pre><code>## [1] &quot;31536000s (~52.14 weeks)&quot;</code></pre>
+</div>
+<div id="interval-1" class="slide section level2">
+<h1>Interval</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">interval</span>(<span class="st">&quot;2012-01-01&quot;</span>,<span class="st">&quot;2012-02-01&quot;</span>)</code></pre></div>
+<pre><code>## [1] 2012-01-01 UTC--2012-02-01 UTC</code></pre>
 </div>
 <div id="--3" class="slide section level2">
 <h1>История третья</h1>
 <p>Чем все закончилось?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">seconds$seconds &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">as.duration</span>(<span class="kw">hms</span>(seconds$time)))</code></pre></div>
-<pre><code>## estimate only: convert periods to intervals for accuracy</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">seconds.a &lt;-<span class="st"> </span>seconds %&gt;%<span class="st"> </span><span class="kw">filter</span>(condition ==<span class="st"> 'A'</span>) %&gt;%<span class="st"> </span><span class="kw">select</span>(seconds) %&gt;%<span class="st"> </span>unlist
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">seconds$seconds &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">as.duration</span>(<span class="kw">hms</span>(seconds$time)))
+seconds.a &lt;-<span class="st"> </span>seconds %&gt;%<span class="st"> </span><span class="kw">filter</span>(condition ==<span class="st"> 'A'</span>) %&gt;%<span class="st"> </span><span class="kw">select</span>(seconds) %&gt;%<span class="st"> </span>unlist
 seconds.b &lt;-<span class="st"> </span>seconds %&gt;%<span class="st"> </span><span class="kw">filter</span>(condition ==<span class="st"> 'B'</span>) %&gt;%<span class="st"> </span><span class="kw">select</span>(seconds) %&gt;%<span class="st"> </span>unlist
 <span class="kw">t.test</span>(seconds.a, seconds.b, <span class="dt">alternative =</span> <span class="st">&quot;less&quot;</span>)</code></pre></div>
 <pre><code>## 
@@ -272,12 +268,27 @@ seconds.b &lt;-<span class="st"> </span>seconds %&gt;%<span class="st"> </span><
 </div>
 <div id="--" class="slide section level2">
 <h1>На этом все</h1>
+<p>О чем я не рассказал:</p>
+<ul>
+<li>о работе с часовыми поясами и летним временем;</li>
+<li>о манипулировании с элементами дат;</li>
+<li>guess_format и parse_date_time2;</li>
+<li>…</li>
+</ul>
+</div>
+<div id="--" class="slide section level2">
+<h1>Где узнать больше?</h1>
 <p><a href="https://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html">Do more with dates and times in R with lubridate</a></p>
 <p><a href="https://www.jstatsoft.org/article/view/v040i03/v40i03.pdf">Dates and Times Made Easy with lubridate</a></p>
 <p><a href="https://cran.r-project.org/web/packages/lubridate/lubridate.pdf">Документация</a></p>
+<p><a href="https://github.com/testlnord/lubridate_presentation">Эта презентация с кодом и данными</a></p>
 </div>
 <div id="--" class="slide section level2">
 <h1>Спасибо за внимание</h1>
+<br /><br />
+<p style="font-size:200%;text-align:center">
+Вопросы?
+</p>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->
