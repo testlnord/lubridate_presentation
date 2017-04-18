@@ -1,9 +1,13 @@
 ---
-title: "Lubridate"
-subtitle: "Dates with no pain"
-author: "Arkady"
-date: "April 14, 2017"
-output: slidy_presentation
+title: "lubridate"
+subtitle: "Даты без боли"
+author: |
+   Калакуцкий Аркадий 
+   <p style="font-size:small">Младший технический аналитик</p>
+   <p style="font-size:small">JetBrains</p>
+date: "15.04.2017"
+output: 
+  slidy_presentation
 ---
 
 ```{r setup, include=FALSE}
@@ -33,7 +37,7 @@ as.Date(format(as.Date(user.activities$activity.dates), "%Y-%m-01")) %>% head
 Среднее время исполнения:
 ```{r, cache=TRUE, echo=FALSE}
 mean(sapply(1:100, function(x){
- # system.time(as.Date(format(as.Date(user.activities$activity.dates), "%Y-%m-01")) %>% head)[1]
+  system.time(as.Date(format(as.Date(user.activities$activity.dates), "%Y-%m-01")) %>% head)[1]
 }))
 ```
 ## История первая
@@ -46,7 +50,7 @@ floor_date(as.Date(user.activities$activity.dates), "month") %>% head
 Среднее время исполнения:
 ```{r, cache=TRUE, echo=FALSE}
 mean(sapply(1:100, function(x){
-#  system.time(floor_date(as.Date(user.activities$activity.dates), "month") %>% head)[1]
+  system.time(floor_date(as.Date(user.activities$activity.dates), "month") %>% head)[1]
 }))
 ```
 
@@ -77,28 +81,26 @@ user.activities.months$last.month %>% head
 (user.activities.months$last.month + years(1)) %>% head
 ```
 
-## Что еще можно прибавить?
+## Period
 ```{r}
 date <- as.Date("2016-02-12")
-date
-date + years(1)
-date + months(1)
-date + days(1)
+date + c(years(1), months(1), days(1))
+date + (years(1)*2 + months(1))
 ```
 
-## Что еще можно прибавить?
+## Period
 Что получится в результате?
 ```{r, results="hide"}
 as.Date("2016-02-29") + years(1)
 as.Date("2016-01-31") + months(1)
 ```
 
-## Что еще можно прибавить?
+## Period
 ```{r}
 as.Date("2016-02-29") + years(1)
 as.Date("2016-01-31") + months(1)
 ```
-## Что еще можно прибавить?
+## Period
 Если мы имели в виду что-то другое:
 ```{r}
 as.Date("2016-02-29") %m+% years(1)
@@ -123,9 +125,9 @@ ggplot(users.count.by.month, aes(month, active.users.count)) + geom_line()
 
 ## История вторая
 ### Про плохую выгрузку
-Что делать с такими данными:
+Что делать с такими данными?
 ```{r}
-bad.dates <- read.csv("data/bad_formats.csv", stringsAsFactors = FALSE)
+bad.dates <- read.csv("data/bad_formats.csv", stringsAsFactors = FALSE)$x
 head(bad.dates)
 ```
 
@@ -140,13 +142,13 @@ parse_date_time(bad.dates,
 ## История вторая
 ```{r}
 parse_date_time(bad.dates, 
-                orders = c("ymdhms", 
-                           "ymdhm", 
-                           "ymd")) %>% head
+                orders = c("ymd",
+                           "ymdHM",
+                           "ymdHMS")) %>% head
 ```
 
 ## Cемейство `ymd`
-`ymd`, `dmy`, `ydm`, `mdy`, `hm`, `hms`, `ymd_hms` 
+`ymd`, `dmy`, `ydm`, `mdy`, `hm`, `ms`, `hms`, `ymd_hms` 
 ```{r}
 ymd('20120101','120101','12-01-01','12asdf1dfdf1')
 ```
@@ -158,24 +160,24 @@ ymd('20120101','120101','12-01-01','12asdf1dfdf1')
 seconds <- read.csv("data/seconds.csv")
 seconds %>% head
 ```
-Нужно проверить гипотезу о том, что среднее время при условиях `А` меньше
+Нужно проверить гипотезу о том, что среднее время при условиях `А` меньше.
 
 ## История третья
-Как из `00:01:41` получить секунды?
+Как из `"00:01:41"` получить секунды?
 
 ## История третья
-Как из `00:01:41` получить секунды?
+Как из `"00:01:41"` получить секунды?
 ```{r}
 as.integer(as.duration(hms(seconds$time))) %>% head
 ```
 
 ## Отрезки времени
 
-###Period
+### Period
 
-###Duration
+### Duration
 
-###Interval
+### Interval
 
 ## Duration
 
@@ -186,6 +188,11 @@ ddays(1)
 dyears(1)
 ```
 
+## Interval
+```{r}
+interval("2012-01-01","2012-02-01")
+```
+
 ## История третья
 Чем все закончилось?
 ```{r}
@@ -194,13 +201,26 @@ seconds.a <- seconds %>% filter(condition == 'A') %>% select(seconds) %>% unlist
 seconds.b <- seconds %>% filter(condition == 'B') %>% select(seconds) %>% unlist
 t.test(seconds.a, seconds.b, alternative = "less")
 ```
+
 ## На этом все
  
+О чем я не рассказал:
+
+* о работе с часовыми поясами и летним временем;
+* о манипулировании с элементами дат;
+* guess_format и parse_date_time2;
+* ...
+
+## Где узнать больше? 
 [Do more with dates and times in R with lubridate](https://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html)
 
 [Dates and Times Made Easy with lubridate](https://www.jstatsoft.org/article/view/v040i03/v40i03.pdf)
 
 [Документация](https://cran.r-project.org/web/packages/lubridate/lubridate.pdf)
 
+[Эта презентация с кодом и данными](https://github.com/testlnord/lubridate_presentation)
+
 ## Спасибо за внимание
+<br/><br/>
+<p style="font-size:200%;text-align:center">Вопросы?</p>
 
